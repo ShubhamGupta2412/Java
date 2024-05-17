@@ -1,0 +1,103 @@
+package producer_consumer_q4;
+
+import java.util.LinkedList;
+
+public class Producer implements Runnable {
+    private LinkedList<Integer> list;
+    private int capacity;
+
+    public Producer(LinkedList<Integer> list, int capacity) {
+        this.list = list;
+        this.capacity = capacity;
+    }
+
+    @Override
+    public void run() {
+        int value = 0;
+        while (true) {
+            synchronized (list) {
+                while (list.size() == capacity) {
+                    try {
+                        list.wait();
+                    } catch (InterruptedException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+
+                System.out.println("Producer produced-" + value);
+                list.add(value++);
+
+                list.notify();
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+    }
+}
+
+
+
+
+// consumer
+package producer_consumer_q4;
+
+import java.util.LinkedList;
+
+public class Consumer implements Runnable {
+    private LinkedList<Integer> list;
+
+    public Consumer(LinkedList<Integer> list) {
+        this.list = list;
+    }
+
+    @Override
+    public void run() {
+        while (true) {
+            synchronized (list) {
+                while (list.size() == 0) {
+                    try {
+                        list.wait();
+                    } catch (InterruptedException e) {
+                        System.out.println(e.getMessage());
+                    }
+                }
+
+                int val = list.removeFirst();
+                System.out.println("Consumer consumed-" + val);
+                list.notify();
+
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+    }
+}
+
+// main
+package producer_consumer_q4;
+
+import java.util.LinkedList;
+
+public class Main {
+    public static void main(String[] args) {
+        LinkedList<Integer> list = new LinkedList<>();
+        int capacity = 2;
+
+        Producer producer = new Producer(list, capacity);
+        Consumer consumer = new Consumer(list);
+
+        Thread producerThread = new Thread(producer, "producer_thread");
+        Thread consumerThread = new Thread(consumer, "consumer_thread");
+
+        producerThread.start();
+        consumerThread.start();
+    }
+}
+

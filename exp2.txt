@@ -1,0 +1,12 @@
+import java.util.StringTokenizer;
+public class Main {
+public static void main (String [] args) {
+ String longString = "This is a long string with multiple words and punctuation.";
+ StringTokenizer tokenizer = new StringTokenizer(longString);
+ System.out.println("Tokens from the given long string:");
+ while (tokenizer.hasMoreTokens()) {
+ String token = tokenizer.nextToken();
+ System.out.println(token);
+ 	}
+ }
+}

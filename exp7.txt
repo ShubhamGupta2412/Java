@@ -1,0 +1,33 @@
+import java.io.*;
+import java.util.*;
+
+public class fileTextUppercase {
+
+    public static void main(String[] args) {
+        List<String> lines = new ArrayList<>();
+
+        
+// Read lines from file
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("D:\\docs ND stuff\\2nd yr coding stuff\\JAVA lab\\LAB\\Lower2Upper.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                lines.add(line.toUpperCase());
+            }
+        } catch (IOException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+
+        
+// Write uppercase lines back to the same file
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("D:\\docs ND stuff\\2nd yr coding stuff\\JAVA lab\\LAB\\Lower2Upper.txt"))) {
+            for (String line : lines) {
+                writer.write(line);
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println("Error writing to file: " + e.getMessage());
+        }
+    }
+} 

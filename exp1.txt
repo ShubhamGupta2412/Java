@@ -1,0 +1,38 @@
+import java.util.*;
+class HelloWorld {
+    static void push_stack(Stack<Integer> stack, int a) {
+        stack.push(a);
+        System.out.println("Pushed item " + a + " to the stack.");
+    }
+    static void pop_stack(Stack<Integer> stack) {
+        while(!stack.isEmpty()) {
+            System.out.println("Popped item " + stack.pop() + " from the stack.");
+        }
+    }
+    
+    static void push_queue(Queue<Integer> queue, int a) {
+        queue.offer(a);
+        System.out.println("Pushed item " + a + " to the queue.");
+    }
+    
+    static void pop_queue(Queue<Integer> queue) {
+        while(!queue.isEmpty()) {
+            System.out.println("Popped item " + queue.poll() + " from the queue.");
+        }
+    }
+    
+    public static void main(String[] args) {
+        System.out.println("----Stack----");
+        Stack<Integer> stack = new Stack<Integer>();
+        push_stack(stack, 10);
+        push_stack(stack, 20);
+        push_stack(stack, 30);
+        pop_stack(stack);
+        System.out.println("----Queue----");
+        Queue<Integer> queue = new LinkedList<>();
+        push_queue(queue, 10);
+        push_queue(queue, 20);
+        push_queue(queue, 30);
+        pop_queue(queue);
+    }
+}

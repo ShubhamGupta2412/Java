@@ -1,0 +1,76 @@
+import java.awt.*;
+import java.util.*;
+import javax.swing.Timer;
+import javax.swing.*;
+
+public class AnalogClock extends JPanel {
+private int hours = 0, minutes = 0, seconds = 0;
+
+public AnalogClock() {
+Timer timer = new Timer(1000, e -> repaint());
+timer.start();
+}
+
+@Override
+protected void paintComponent(Graphics g) {
+super.paintComponent(g);
+
+Calendar now = Calendar.getInstance();
+hours = now.get(Calendar.HOUR_OF_DAY);
+minutes = now.get(Calendar.MINUTE);
+seconds = now.get(Calendar.SECOND);
+
+int clockRadius = Math.min(getWidth(), getHeight()) / 3;
+int clockX = getWidth() / 2;
+int clockY = getHeight() / 2;
+
+// Draw the clock face
+g.setColor(Color.BLACK);
+g.drawOval(clockX - clockRadius, clockY - clockRadius, 2 * clockRadius, 2 * clockRadius);
+
+
+// Draw the numbers
+
+g.setFont(new Font("default", Font.BOLD, 14));
+for (int i = 1; i <= 12; i++) {
+double angle = Math.toRadians(90 - (i * 30));
+int numberX = clockX + (int) ((clockRadius - 20) * Math.cos(angle));
+int numberY = clockY - (int) ((clockRadius - 20) * Math.sin(angle));
+g.drawString(Integer.toString(i), numberX, numberY);
+}
+
+// Draw the hour hand
+double hourAngle = Math.toRadians(90 - (hours * 30 + minutes * 0.5));
+int hourHandLength = clockRadius / 2;
+g.setColor(Color.BLACK);
+g.drawLine(clockX, clockY,
+clockX + (int) (hourHandLength * Math.cos(hourAngle)),
+clockY - (int) (hourHandLength * Math.sin(hourAngle)));
+
+// Draw the minute hand
+double minuteAngle = Math.toRadians(90 - (minutes * 6));
+int minuteHandLength = clockRadius * 2 / 3;
+g.setColor(Color.BLUE);
+g.drawLine(clockX, clockY,
+clockX + (int) (minuteHandLength * Math.cos(minuteAngle)),
+clockY - (int) (minuteHandLength * Math.sin(minuteAngle)));
+
+// Draw the second hand
+double secondAngle = Math.toRadians(90 - (seconds * 6));
+int secondHandLength = clockRadius - 20;
+g.setColor(Color.RED);
+g.drawLine(clockX, clockY,
+clockX + (int) (secondHandLength * Math.cos(secondAngle)),
+clockY - (int) (secondHandLength * Math.sin(secondAngle)));
+}
+
+public static void main(String[] args) {
+JFrame frame = new JFrame();
+frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+frame.setSize(800, 800);
+frame.add(new AnalogClock());
+frame.setLocationRelativeTo(null);
+frame.setVisible(true);
+}
+}
+ 
